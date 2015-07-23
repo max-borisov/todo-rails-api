@@ -1,4 +1,12 @@
 Rails.application.routes.draw do
+  get 'project/index'
+
+  get 'project/create'
+
+  get 'project/update'
+
+  get 'project/destroy'
+
   get 'index/index'
 
   root 'index#index'
