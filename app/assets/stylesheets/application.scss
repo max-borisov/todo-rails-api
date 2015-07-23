@@ -43,7 +43,8 @@ body {
 
 .todo-header {
   border: 1px solid #315587;
-  background: image-url('todo-header-icon.png') 15px 50% no-repeat, #4165a3 image-url('todo-header-bg.png') left top repeat;
+  background: image-url('todo-header-icon.png') 15px 50% no-repeat,
+              #4165a3 image-url('todo-header-bg.png') left top repeat;
   height: $todo-header-height;
   padding: 0 16px;
   color: #ffffff;
@@ -274,6 +275,30 @@ body {
           }
         }
       }
+    }
+  }
+}
+
+.new-todo {
+  text-align: center;
+  margin-top: 50px;
+
+  button {
+    width: 211px;
+    height: 46px;
+    line-height: 46px;
+    border-radius: 2px 2px 2px 2px;
+    border: 1px solid #315587;
+    background: image-url('todo-btn-cross.png') 10px 50% no-repeat,
+                #4171b5 image-url('todo-btn-bg.png') left top repeat-x;
+    color: #fff;
+    font-size: 16px;
+    padding: 0;
+    outline: none;
+
+    &:active {
+      background-image: none;
+      background-color: #5d80a6;
     }
   }
 }
