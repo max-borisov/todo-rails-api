@@ -22,40 +22,60 @@ $ ->
 
 class TodoHeaderHandlers
   showActionButtons: ->
-    $('.todo-header')
-    .mouseover ->
-      $(@).find('ul').removeClass('hidden')
-    .mouseout ->
-      $(@).find('ul').addClass('hidden')
+    $('.content .list')
+      .on 'mouseover', 'article .todo-header', (e) ->
+        $(@).find('ul').removeClass('hidden')
+      .on 'mouseout', 'article .todo-header', (e) ->
+        $(@).find('ul').addClass('hidden')
 
   editTodoHeader: ->
-    $('.todo-action-edit').on 'click', (e) ->
+    $('.content .list').on 'click', '.todo-header .todo-action-edit', (e) ->
       e.preventDefault()
-      $(@).parents('.todo-header')
-      .addClass('edit-mode')
-      .find('input')
-      .val($('.todo-header h3').text())
-      .focus()
+      project_header = $(@).parents('.todo-header')
+      project_title = project_header.find('h3').text()
+      project_header
+        .addClass('edit-mode')
+        .find('input')
+        .val(project_title)
+        .focus()
 
   removeTodo: ->
-    $('.todo-action-remove').on 'click', (e) ->
+    $('.content .list').on 'click', '.todo-header .todo-action-remove', (e) ->
       e.preventDefault()
       if confirm 'Are you sure ?'
-        $(@).parents('article').hide()
+        project = $(@).parents('article')
+        project_id = project.data('project-id')
+        project_path = "<%= Rails.application.routes.url_helpers.project_path(0) %>"
+        project_path = project_path.replace('0', project_id)
+        $.ajax
+          url: project_path
+          method: 'DELETE'
+        .done (data) ->
+          project.slideUp (e) =>
+            @.remove
 
   updateTodoHeader: ->
-    $('.todo-header input').on 'blur', (e) =>
+    $('.content .list').on 'blur', '.todo-header input', (e) =>
       @._cancelEditing($(e.currentTarget))
 
-    $('.todo-header input').on 'keypress', (e) =>
+    $('.content .list').on 'keypress', '.todo-header input', (e) =>
       if e.which is ENTER_KEY
         @._cancelEditing($(e.currentTarget))
 
   _cancelEditing: (input) ->
-    input.parent('.todo-header')
-    .removeClass('edit-mode')
-    .find('h3')
-    .text(input.val())
+    project_title = input.val()
+    project_id = $(input).parents('article').data('project-id')
+    project_path = "<%= Rails.application.routes.url_helpers.project_path(0) %>"
+    project_path = project_path.replace('0', project_id)
+    $.ajax
+      url: project_path
+      method: 'PUT'
+      data: { project: { title:  project_title } }
+    .done (data) ->
+      input.parent('.todo-header')
+        .removeClass('edit-mode')
+        .find('h3')
+        .text(project_title)
 
 class TodoBarHandlers
   button: ->
@@ -70,13 +90,24 @@ class TodoBarHandlers
         @._newTask($(e.currentTarget).next('button'))
 
   _newTask: (button) ->
-    taskInput = button.prev('input')
-    taskText = taskInput.val()
-    taskTable = button.parents('article').find('table tbody')
-    newTaskRow = taskTable.find('tr:last').clone()
-    newTaskRow.find('.todo-list-task p').text(taskText)
-    taskTable.append(newTaskRow)
-    taskInput.val('')
+    # project = $(@).parents('article')
+    # project_id = project.data('project-id')
+    # project_path = "<%= Rails.application.routes.url_helpers.project_path(0) %>"
+    # project_path = project_path.replace('0', project_id)
+    $.ajax
+      url: project_path
+      method: 'DELETE'
+    .done (data) ->
+      project.slideUp (e) =>
+        @.remove
+
+    # taskInput = button.prev('input')
+    # taskText = taskInput.val()
+    # taskTable = button.parents('article').find('table tbody')
+    # newTaskRow = taskTable.find('tr:last').clone()
+    # newTaskRow.find('.todo-list-task p').text(taskText)
+    # taskTable.append(newTaskRow)
+    # taskInput.val('')
 
 class TodoListHandlers
   showActions: ->
