@@ -1,0 +1,20 @@
+%article{ data: { project: { id: "#{project.id}" } } }
+  .todo-header
+    %h3= h project.title
+    %ul.hidden
+      %li
+        %a.todo-action-edit{ href: "#", title: "Edit" } Edit
+      %li
+        %a.todo-action-remove{ href: "#", title: "Delete" } Delete
+    %input{ name: "", type: "text" }
+  .todo-bar
+    .todo-bar-new
+      %form
+        %input{ name: "", placeholder: "Start typing here to create a task...", type: "text" }
+          %button Add Task
+  - unless project.tasks.empty?
+    .todo-list
+      %table
+        %tbody
+          = render project.tasks
+

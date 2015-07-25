@@ -1,0 +1,15 @@
+%tr
+  %td.todo-list-checkbox
+    %input{ type: "checkbox" }
+  %td.todo-list-divider
+    \&nbsp;
+  %td.todo-list-task
+    %p= h task.description
+  %td.todo-list-actions
+    %ul.hidden
+      %li
+        %a.todo-list-task-sort{ href: "#" } Sort
+      %li
+        %a.todo-list-task-edit{ href: "#" } Edit
+      %li
+        %a.todo-list-task-delete{ href: "#" } Delete

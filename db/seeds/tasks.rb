@@ -4,19 +4,19 @@ ihub        = Project.where('title LIKE ?', '%ihub%').take
 
 3.times do
   netguru.tasks.create!(
-    description: 'bla bla vla bla',
+    description: Faker::Lorem.paragraph,
     completed: false)
 end
 
 2.times do
   ruby_garage.tasks.create!(
-    description: 'bla bla vla bla',
+    description: Faker::Lorem.paragraph,
     completed: true)
 end
 
 4.times do
   ihub.tasks.create!(
-    description: 'bla bla vla bla',
+    description: Faker::Lorem.paragraph,
     completed: false)
 end
 
