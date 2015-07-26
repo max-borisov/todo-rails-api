@@ -1,6 +1,17 @@
 ENTER_KEY = 13
 $ ->
-  $(".todo-list table tbody").sortable()
+  $(".todo-list table tbody").sortable {
+    update: (event, ui) ->
+      task_ids = $.map $(event.target).find('tr'), (row) ->
+        return $(row).data('task-id')
+      project_id = $(event.target).parents('article').data('project-id')
+      sort_project_tasks_path = "<%= Rails.application.routes.url_helpers.sort_project_tasks_path(0) %>"
+      sort_project_tasks_path = sort_project_tasks_path.replace('0', project_id)
+      $.ajax
+        url: sort_project_tasks_path
+        method: 'PUT'
+        data: { project: { tasks: task_ids } }
+  }
 
   todoHeaderHandlers = new TodoHeaderHandlers()
   todoHeaderHandlers.showActionButtons()
@@ -90,24 +101,16 @@ class TodoBarHandlers
         @._newTask($(e.currentTarget).next('button'))
 
   _newTask: (button) ->
-    # project = $(@).parents('article')
-    # project_id = project.data('project-id')
-    # project_path = "<%= Rails.application.routes.url_helpers.project_path(0) %>"
-    # project_path = project_path.replace('0', project_id)
+    project_id = button.parents('article').data('project-id')
+    project_tasks_path = "<%= Rails.application.routes.url_helpers.project_tasks_path(0) %>"
+    project_tasks_path = project_tasks_path.replace('0', project_id)
+    task_description = button.prev('input').val()
     $.ajax
-      url: project_path
-      method: 'DELETE'
+      url: project_tasks_path
+      method: 'POST',
+      data: { task: { description: task_description } }
     .done (data) ->
-      project.slideUp (e) =>
-        @.remove
-
-    # taskInput = button.prev('input')
-    # taskText = taskInput.val()
-    # taskTable = button.parents('article').find('table tbody')
-    # newTaskRow = taskTable.find('tr:last').clone()
-    # newTaskRow.find('.todo-list-task p').text(taskText)
-    # taskTable.append(newTaskRow)
-    # taskInput.val('')
+      button.prev('input').val('')
 
 class TodoListHandlers
   showActions: ->
@@ -142,20 +145,48 @@ class TodoListHandlers
       @._cancelTaskEditing($(e.currentTarget))
 
   removeTask: ->
-    $('.todo-list').on 'click', 'tr .todo-list-task-delete', (e) ->
+    $('.todo-list').on 'click', 'tr .todo-list-task-delete', (e) =>
       e.preventDefault()
       if confirm 'Are you sure ?'
-        $(@).parents('tr').remove()
+        task = $(e.currentTarget).parents('tr')
+        task_id = task.data('task-id')
+        project_id = $(e.currentTarget).parents('article').data('project-id')
+        project_task_path = @._projectTaskPath(project_id, task_id)
+        $.ajax
+          url: project_task_path
+          method: 'DELETE'
+        .done (data) ->
+          task.remove()
 
-  _completeTask: (elem) ->
-    elem.parents('tr').toggleClass('completed-task')
+  _completeTask: (checkbox) ->
+    checkbox.parents('tr').toggleClass('completed-task')
+    project_id = checkbox.parents('article').data('project-id')
+    task_id = checkbox.parents('tr').data('task-id')
+    complete_project_task_path = "<%= Rails.application.routes.url_helpers.complete_project_task_path(0, 12345) %>"
+    complete_project_task_path = complete_project_task_path.replace('0', project_id).replace('12345', task_id)
+    $.ajax
+      url: complete_project_task_path
+      method: 'PUT',
+      data: { task: { complete:  checkbox.is(':checked') } }
 
   _cancelTaskEditing: (input) ->
-    parent = input.parent()
-    parent.find('p').text(input.val())
-    parent.find('input')?.remove()
-#    parent.hasClass('edit-mode')?removeClass('edit-mode')
-    parent.removeClass('edit-mode')
+    project_id = input.parents('article').data('project-id')
+    task_id = input.parents('tr').data('task-id')
+    project_task_path = @._projectTaskPath(project_id, task_id)
+    task_description = input.val()
+    $.ajax
+      url: project_task_path
+      method: 'PUT',
+      data: { task: { description:  task_description } }
+    .done (data) ->
+      parent = input.parent()
+      parent.find('p').text(task_description)
+      parent.find('input')?.remove()
+      parent.removeClass('edit-mode')
+
+  _projectTaskPath: (project_id, task_id) ->
+    path = "<%= Rails.application.routes.url_helpers.project_task_path(0, 12345) %>"
+    path = path.replace('0', project_id).replace('12345', task_id)
 
   _editTaskInput: () ->
     "<input type='text' name='' value=''>"

@@ -1,0 +1,22 @@
+!!!
+%html{ lang: 'en' }
+  %head
+    %title RubyGarage Todo list
+    %meta{ charset: "utf-8" }
+    %meta{ content: 'IE=Edge,chrome=1', 'http-equiv' => 'X-UA-Compatible' }/
+    %meta{ content: 'width=device-width, initial-scale=1.0', name: 'viewport' }/
+    %link{ href: "apple-touch-icon.png", rel: "apple-touch-icon" }
+    = csrf_meta_tags
+    = stylesheet_link_tag 'application', media: 'all'
+    = javascript_include_tag 'application'
+
+  %body
+    .main
+      .header
+        %h1 simple todo lists
+        %p from ruby garage
+      .content
+        %section.list
+          = yield
+        .new-todo
+          = button_to 'Add TODO List', projects_path, remote: true

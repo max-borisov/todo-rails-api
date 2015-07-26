@@ -5,7 +5,7 @@ ihub        = Project.where('title LIKE ?', '%ihub%').take
 3.times do
   netguru.tasks.create!(
     description: Faker::Lorem.paragraph,
-    completed: false)
+    completed: true)
 end
 
 2.times do

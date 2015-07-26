@@ -1,6 +1,6 @@
-%tr
+%tr{ data: { task: {id: task.id} }, class: task.completed? ? 'completed-task' : nil }
   %td.todo-list-checkbox
-    %input{ type: "checkbox" }
+    %input{ type: "checkbox", checked: task.completed? ? 'checked' : nil }
   %td.todo-list-divider
     \&nbsp;
   %td.todo-list-task
