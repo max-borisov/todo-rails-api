@@ -12,9 +12,9 @@
       %form
         %input{ name: "", placeholder: "Start typing here to create a task...", type: "text" }
           %button Add Task
-  - unless project.tasks.empty?
-    .todo-list
-      %table
-        %tbody
+  .todo-list
+    %table
+      %tbody
+        - unless project.tasks.empty?
           = render project.tasks
 
