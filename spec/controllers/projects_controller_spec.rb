@@ -4,6 +4,10 @@ describe ProjectsController do
   let(:valid_attributes) { attributes_for(:project) }
   let!(:project) { create(:project) }
 
+  before do
+    js_accept_headers
+  end
+
   describe "GET index" do
     it "exposes all projects" do
       task = create(:task, project: project)
@@ -30,11 +34,11 @@ describe ProjectsController do
     it 'updates the requested project' do
       attributes = valid_attributes.stringify_keys.transform_values { |x| x.to_s }
       allow_any_instance_of(Project).to receive(:update).with(attributes)
-      put :update, id: project.to_param, project: attributes, format: 'js'
+      put :update, id: project.to_param, project: attributes
     end
 
     it 'exposes the requested project' do
-      put :update, id: project.to_param, project: valid_attributes, format: 'js'
+      put :update, id: project.to_param, project: valid_attributes
       expect(assigns(:project)).to eq(project)
     end
   end
@@ -42,7 +46,7 @@ describe ProjectsController do
   describe 'DELETE destroy' do
     it 'destroys the requested project' do
       expect {
-        delete :destroy, :id => project.to_param, format: 'js'
+        delete :destroy, :id => project.to_param
       }.to change(Project, :count).by(-1)
     end
   end

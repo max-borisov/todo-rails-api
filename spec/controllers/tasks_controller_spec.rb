@@ -5,6 +5,10 @@ describe TasksController do
   let(:valid_attributes) { { description: 'New task' } }
   let(:task) { create(:task, project: project) }
 
+  before do
+    js_accept_headers
+  end
+
   describe 'POST create' do
     it 'creates a new Task' do
       expect {
