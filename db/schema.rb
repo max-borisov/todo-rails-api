@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150726122316) do
+ActiveRecord::Schema.define(version: 20150726184151) do
 
   create_table "projects", force: :cascade do |t|
     t.string   "title"
@@ -28,6 +28,7 @@ ActiveRecord::Schema.define(version: 20150726122316) do
     t.integer  "position",    default: 0,     null: false
   end
 
+  add_index "tasks", ["position"], name: "index_tasks_on_position"
   add_index "tasks", ["project_id"], name: "index_tasks_on_project_id"
 
 end

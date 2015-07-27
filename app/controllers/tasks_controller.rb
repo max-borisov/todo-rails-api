@@ -1,6 +1,7 @@
 class TasksController < ApplicationController
   before_action :set_project, only: [:create, :update, :destroy, :complete, :sort]
   before_action :set_task, only: [:update, :destroy, :complete]
+  before_action :set_format
 
   def create
     @task = @project.tasks.create(task_params)
@@ -34,5 +35,9 @@ class TasksController < ApplicationController
 
   def task_params
     params.require(:task).permit(:description)
+  end
+
+  def set_format
+    request.format = 'js'
   end
 end

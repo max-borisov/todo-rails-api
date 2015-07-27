@@ -1,33 +1,49 @@
 require 'rails_helper'
 
-RSpec.describe ProjectsController, type: :controller do
+describe ProjectsController do
+  let(:valid_attributes) { attributes_for(:project) }
+  let!(:project) { create(:project) }
 
-  describe "GET #index" do
-    it "returns http success" do
+  describe "GET index" do
+    it "exposes all projects" do
+      task = create(:task, project: project)
       get :index
-      expect(response).to have_http_status(:success)
+      expect(assigns(:projects)).to eq([project])
     end
   end
 
-  describe "GET #create" do
-    it "returns http success" do
-      get :create
-      expect(response).to have_http_status(:success)
+  describe 'POST create' do
+    it 'creates a new Project' do
+      expect {
+        post :create, { project: valid_attributes }
+      }.to change(Project, :count).by(1)
+    end
+
+    it 'exposes a newly created project as #project' do
+      post :create, { project: valid_attributes }
+      expect(assigns(:project)).to be_an_instance_of(Project)
+      expect(assigns(:project)).to be_persisted
     end
   end
 
-  describe "GET #update" do
-    it "returns http success" do
-      get :update
-      expect(response).to have_http_status(:success)
+  describe 'PUT update' do
+    it 'updates the requested project' do
+      attributes = valid_attributes.stringify_keys.transform_values { |x| x.to_s }
+      allow_any_instance_of(Project).to receive(:update).with(attributes)
+      put :update, id: project.to_param, project: attributes, format: 'js'
+    end
+
+    it 'exposes the requested project' do
+      put :update, id: project.to_param, project: valid_attributes, format: 'js'
+      expect(assigns(:project)).to eq(project)
     end
   end
 
-  describe "GET #destroy" do
-    it "returns http success" do
-      get :destroy
-      expect(response).to have_http_status(:success)
+  describe 'DELETE destroy' do
+    it 'destroys the requested project' do
+      expect {
+        delete :destroy, :id => project.to_param, format: 'js'
+      }.to change(Project, :count).by(-1)
     end
   end
-
 end
