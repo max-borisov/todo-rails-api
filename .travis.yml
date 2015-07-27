@@ -1,0 +1,17 @@
+language: ruby
+rvm:
+  - 2.2.2
+deploy:
+  provider: heroku
+  api_key:
+    secure: E4t5qv85B5d7dmeKha5HsJEH6MflrIAd9bWo9qevZ9UgMeETYW5omPYP8ZG4dRnvqMYmEYBJJwgddLodkDEATWWMtRMWZWvv+abxZ3BgjkFdJYnmWqQ8nYpdJAkF2HjV/h2ItaEpzedaTsCp9GTgdUXHwWg/pbL836mAGC9bJNpOuh8Ro8j7pjU9PoCsPzCU0dnPqPNFFxfBBzyiGhS/HDIrd49bYtzpbwBFwjUSOyuNIW7Wu+aw7Ooxh07aXSpfRP1AVrRzmzqxyKII+Xn+oxPMdRhOH//Anbhb08CDqudLVcrwFST2W89lQJn7YZiUg029J8tR60ykMyzdiq61L8HRlbJYFk5L0tq6l8PZ1bZ5F6ODRnd2A+ArWCgGH1qftqwURlZ9+uA3shaZIvnF/VzYcRLehbtCoi7Xjn7g7NvZoEjXdUw8p0OlShg4T8wJhGn711XGxVGmWUQ6spA4JTZmEpV3D1BbwKbFHTvPML0Sudib33hwBpsMH96opcg/5aY2Exk/NtEUkTSEHSTHWovGlWp5KMdzQgN3cCo6lIwOURakvgwOXaX95ZLJf8pOyFbpyKRIUh5EjqskRaf+lEGWRdpOoCvn0NCdAOaVfvlDQDLOcx6mZ4JltuCAv7U9ZU6QcVXQtxwV8uPC6gHXC7aNGGtIPzKDcdhuvVECm6U=
+  app: rails-simple-todo
+  on:
+    repo: max-borisov/rails-todo
+before_script:
+  - cp config/database.yml.travis config/database.yml
+  - psql -c 'create database travis_ci_test;' -U postgres
+  - bundle exec rake db:migrate
+script:
+  - bundle exec rspec spec/models
+  - bundle exec rspec spec/controllers
