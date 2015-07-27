@@ -13,5 +13,5 @@ before_script:
   - psql -c 'create database travis_ci_test;' -U postgres
   - rake db:migrate
 script:
-  - rspec spec/models
-  - rspec spec/controllers
+  - bundle exec rspec spec/models
+  - bundle exec rspec spec/controllers
