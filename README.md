@@ -19,9 +19,12 @@ It's a demo so it does not have a registration section.
 
 ## Installation
 * Clone the repo
-* run `rake db:seed` to fill in the database
+* Run `rake db:migrate`
+* Run `rake db:seed` to fill in the database
+* Start the server `rails s -p 9595`
+* Go to [http://localhost:9595](http://localhost:9595) and have a fun
 
 ## Testing
-* run `rspec spec/models`
-* run `rspec spec/controllers`
-* view tests will be done soon
+* Run `rspec spec/models`
+* Run `rspec spec/controllers`
+* View tests will be done soon
