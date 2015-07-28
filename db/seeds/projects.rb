@@ -1,12 +1,12 @@
 Project.create!([
     {
+        title: 'iHUB Rails meetup',
+    },
+    {
         title: 'Netguru worshop',
     },
     {
-        title: 'RubyGarage application',
-    },
-    {
-        title: 'iHUB booshelf app',
+        title: 'Career at Netguru',
     }
 ])
 
