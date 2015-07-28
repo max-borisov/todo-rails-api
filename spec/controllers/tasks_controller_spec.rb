@@ -1,4 +1,4 @@
- require 'rails_helper'
+require 'rails_helper'
 
 describe TasksController do
   let(:project) { create(:project) }
@@ -17,7 +17,7 @@ describe TasksController do
     end
 
     it 'exposes a newly created task as #task' do
-      post :create, { task: valid_attributes, project_id: project.to_param }
+      post :create, task: valid_attributes, project_id: project.to_param
       expect(assigns(:task)).to be_an_instance_of(Task)
       expect(assigns(:task)).to be_persisted
     end
@@ -40,7 +40,7 @@ describe TasksController do
 
     it 'destroys the requested task' do
       expect {
-        delete :destroy, :id => task.to_param, project_id: project.to_param
+        delete :destroy, id: task.to_param, project_id: project.to_param
       }.to change(Task, :count).by(-1)
     end
   end

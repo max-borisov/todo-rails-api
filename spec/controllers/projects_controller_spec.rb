@@ -10,7 +10,7 @@ describe ProjectsController do
 
   describe "GET index" do
     it "exposes all projects" do
-      task = create(:task, project: project)
+      # task = create(:task, project: project)
       get :index
       expect(assigns(:projects)).to eq([project])
     end
@@ -18,13 +18,11 @@ describe ProjectsController do
 
   describe 'POST create' do
     it 'creates a new Project' do
-      expect {
-        post :create, { project: valid_attributes }
-      }.to change(Project, :count).by(1)
+      expect { post :create, project: valid_attributes }.to change(Project, :count).by(1)
     end
 
     it 'exposes a newly created project as #project' do
-      post :create, { project: valid_attributes }
+      post :create, project: valid_attributes
       expect(assigns(:project)).to be_an_instance_of(Project)
       expect(assigns(:project)).to be_persisted
     end
@@ -32,9 +30,8 @@ describe ProjectsController do
 
   describe 'PUT update' do
     it 'updates the requested project' do
-      attributes = valid_attributes.stringify_keys.transform_values { |x| x.to_s }
-      allow_any_instance_of(Project).to receive(:update).with(attributes)
-      put :update, id: project.to_param, project: attributes
+      allow_any_instance_of(Project).to receive(:update).with(valid_attributes)
+      put :update, id: project.to_param, project: valid_attributes
     end
 
     it 'exposes the requested project' do
@@ -45,9 +42,7 @@ describe ProjectsController do
 
   describe 'DELETE destroy' do
     it 'destroys the requested project' do
-      expect {
-        delete :destroy, :id => project.to_param
-      }.to change(Project, :count).by(-1)
+      expect { delete :destroy, id: project.to_param }.to change(Project, :count).by(-1)
     end
   end
 end

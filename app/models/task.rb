@@ -6,8 +6,8 @@ class Task < ActiveRecord::Base
   validates :completed, inclusion: { in: [true, false] }
 
   def self.sort_tasks(tasks)
-    tasks_positions = Hash.new
+    tasks_positions = {}
     tasks.each_index { |index| tasks_positions[tasks[index]] = { 'position': index + 1 } }
-    self.update(tasks_positions.keys, tasks_positions.values)
+    update(tasks_positions.keys, tasks_positions.values)
   end
 end
