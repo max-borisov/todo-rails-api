@@ -29,4 +29,6 @@ It's a demo so it does not have a registration section.
 * Run `rspec spec/controllers`
 * View tests will be done soon
 
+---
+
 ![Simple ToDo lists preview](https://github.com/max-borisov/rails-todo/blob/master/app_preview.png)
