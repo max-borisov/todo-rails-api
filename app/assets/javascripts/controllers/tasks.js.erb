@@ -1,0 +1,69 @@
+app.controller('TaskController', ['$scope', function ($scope) {
+
+  $scope.addTask = function(project) {
+    if (this.task) {
+      projects[project.id - 1].tasks.push({description: this.task, completed: false});
+      this.task = '';
+    }
+  };
+
+  $scope.deleteTask = function(project, task, event) {
+    event.preventDefault();
+
+    if (confirm('Are you sure ?')) {
+      projects[project.id - 1].tasks.splice(task.id - 1, 1);
+    }
+  };
+
+  $scope.editTask = function(project, task, event) {
+    event.preventDefault();
+
+    var editBlock = angular.element(event.currentTarget)
+                  .parent().parent().parent().parent()
+                  .find('td').eq(2);
+    var taskDescription = '';
+    var editFormTpl = "<form><input type='text' name='' value=''></form>";
+    var obj = this;
+    var input;
+
+    if (!editBlock.hasClass('edit-mode')) {
+      editBlock.addClass('edit-mode');
+      taskDescription = editBlock.find('p').text();
+      form = angular.element(editFormTpl);
+
+      // form.find('input').bind('blur', function(event) {
+      //   obj.taskEditBlurEvent(event);
+      // });
+
+      form.bind('submit', function(event) {
+        obj.taskEditSubmitFormEvent(event);
+      });
+
+      editBlock
+        .append(form)
+        .find('input')
+        .val(taskDescription)[0]
+        .focus();
+    }
+  };
+
+  // $scope.taskEditBlurEvent = function(event) {
+  //   event.preventDefault();
+  //   var input = angular.element(event.currentTarget);
+  //   var editBlock = input.parent().parent();
+  //   editBlock.find('p').text(input.val());
+  //   input.parent().remove();
+  //   editBlock.removeClass('edit-mode');
+  // };
+
+  $scope.taskEditSubmitFormEvent = function(event) {
+    event.preventDefault();
+    var form = angular.element(event.currentTarget);
+    var editBlock = form.parent();
+    var input = form.find('input');
+    editBlock.find('p').text(input.val());
+    form.remove();
+    editBlock.removeClass('edit-mode');
+  };
+
+}]);
