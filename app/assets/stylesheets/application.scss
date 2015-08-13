@@ -56,6 +56,10 @@ article {
 
     &:hover {
       cursor: pointer;
+
+      ul {
+        display: block;
+      }
     }
 
     &.edit-mode {
@@ -93,6 +97,7 @@ article {
     }
 
     ul {
+      display: none;
       margin: 0;
       padding: 0;
       list-style: none;
@@ -183,13 +188,16 @@ article {
         &:hover {
           background: #fbfcd4;
           cursor: pointer;
+          ul {
+            display: block!important;
+          }
         }
 
         td {
           padding: 16px 0;
         }
 
-        &.completed-task {
+        &.completed-true {
           p {
             text-decoration: line-through;
             font-style: italic;
@@ -244,7 +252,12 @@ article {
           width: 88px;
           padding: 0 16px;
 
+          &:hover {
+            display: block;
+          }
+
           ul {
+            display: none;
             list-style: none;
             padding: 5px 0 0 0;
             margin: 0;
