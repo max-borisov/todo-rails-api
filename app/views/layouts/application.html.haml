@@ -1,5 +1,5 @@
 !!!
-%html{ lang: 'en' }
+%html{ lang: 'en', 'ng-app': 'todo' }
   %head
     %title RubyGarage Todo list
     %meta{ charset: "utf-8" }
@@ -14,9 +14,8 @@
     .main
       .header
         %h1 simple todo lists
-        / %p from ruby garage
       .content
-        %section.list
-          = yield
+        %section.list{ 'ng-controller': 'TodoController as todoCtrl' }
+          <projects></projects>
         .new-todo
           = button_to 'Add TODO List', projects_path, remote: true

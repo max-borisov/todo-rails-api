@@ -1,0 +1,16 @@
+%article{ 'ng-repeat': 'project in projects' }
+  .todo-header
+    %h3 {{ project.title }}
+    %ul
+      %li
+        %a.todo-action-edit{ href: "#", title: "Edit", 'ng-click': "editProjectTitle(project, $event)" } Edit
+      %li
+        %a.todo-action-remove{ href: "#", title: "Delete", 'ng-click': "deleteProject(project)" } Delete
+    %form{ 'ng-submit': "submitProjectTitle(project, $event)" }
+      %input{ name: "", type: "text" }
+  .todo-bar{ 'ng-controller': 'TaskController as taskCtrl' }
+    .todo-bar-new
+      %form{ 'ng-submit': 'addTask(project)' }
+        %input{ 'ng-model': 'task', placeholder: "Start typing here to create a task...", type: "text" }
+          %button Add Task
+  <tasks></tasks>

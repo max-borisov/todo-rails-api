@@ -1,0 +1,18 @@
+.todo-list{ 'ng-controller': 'TaskController as taskCtrl' }
+  %table
+    %tbody
+      %tr{ 'ng-repeat': "task in project.tasks", class: "completed-{{ task.completed }}" }
+        %td.todo-list-checkbox
+          %input{ type: "checkbox", 'ng-model': 'task.completed' }
+        %td.todo-list-divider
+          \&nbsp;
+        %td.todo-list-task
+          %p {{ task.description }}
+        %td.todo-list-actions
+          %ul
+            %li
+              %a.todo-list-task-sort{ href: "#" } Sort
+            %li
+              %a.todo-list-task-edit{ href: "#", 'ng-click': 'editTask(project, task, $event)' } Edit
+            %li
+              %a.todo-list-task-delete{ href: "#", 'ng-click': 'deleteTask(project, task, $event)' } Delete}
