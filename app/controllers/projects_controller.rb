@@ -1,8 +1,14 @@
 class ProjectsController < ApplicationController
+  protect_from_forgery except: :destroy
   before_action :set_project, only: [:update, :destroy]
+  # layout false
+  # respond_to :json
 
   def index
-    @projects = Project.includes(:tasks).order(created_at: :asc).all
+    # include related tasks
+    # @projects = Project.includes(:tasks).order(created_at: :asc).all
+    projects = Project.all_records
+    render json: projects
   end
 
   def create
@@ -15,6 +21,7 @@ class ProjectsController < ApplicationController
 
   def destroy
     @project.destroy
+    render json: { status: :ok }
   end
 
   private

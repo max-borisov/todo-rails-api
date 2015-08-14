@@ -3,4 +3,18 @@ class Project < ActiveRecord::Base
 
   validates :title, presence: true
   validates :title, length: { maximum: 250 }
+
+  def self.all_records
+    result = []
+    projects = self.select(:id, :title).includes(:tasks).order(created_at: :asc).all
+    projects.each do |project|
+      data = {
+       id: project.id,
+       title: project.title,
+       tasks: project.tasks.select(:id, :description, :completed)
+      }
+      result.push(data)
+    end
+    result
+  end
 end

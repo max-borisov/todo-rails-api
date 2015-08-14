@@ -1,9 +1,11 @@
 class TasksController < ApplicationController
+  protect_from_forgery except: :destroy
   before_action :set_project, only: [:create, :update, :destroy, :complete, :sort]
   before_action :set_task, only: [:update, :destroy, :complete]
 
   def create
-    @task = @project.tasks.create(task_params)
+    task = @project.tasks.create(task_params)
+    render json: { status: :ok, id: task.id, description: task.description, completed: task.completed }
   end
 
   def update
@@ -12,6 +14,7 @@ class TasksController < ApplicationController
 
   def destroy
     @task.destroy
+    render json: { status: :ok }
   end
 
   def complete
