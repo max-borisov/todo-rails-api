@@ -1,8 +1,22 @@
-app.controller('TodoController', ['$scope', function ($scope) {
+app.controller('ProjectController', ['$scope', '$http', function ($scope, $http) {
 
     $scope.projects = projects;
 
+    $http.get('/projects').
+      then(function(response) {
+        $scope.projects = response.data;
+      }, function(response) {
+      });
+
+    $scope.createProject = function(event) {
+      event.preventDefault();
+
+      alert(12);
+    };
+
     $scope.editProjectTitle = function(project, event) {
+      event.preventDefault();
+
       var titleBlock = angular.element(event.currentTarget)
                         .parent().parent().parent();
       projectTitle = titleBlock.find('h3').text();
@@ -13,9 +27,19 @@ app.controller('TodoController', ['$scope', function ($scope) {
         .focus();
     };
 
-    $scope.deleteProject = function(project) {
+    $scope.deleteProject = function(project, event) {
+      event.preventDefault();
+
       if (confirm('Are you sure ?')) {
-        projects.splice(project.id - 1, 1);
+        $http.delete('/projects/' + project.id).
+          then(function(response) {
+            $scope.projects.forEach(function(item, i, arr) {
+              if (item.id == project.id) {
+                arr.splice(i, 1);
+              }
+            })
+          }, function(response) {
+          });
       }
     };
 

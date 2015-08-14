@@ -1,9 +1,15 @@
-app.controller('TaskController', ['$scope', function ($scope) {
+app.controller('TaskController', ['$scope', '$http', function ($scope, $http) {
 
   $scope.addTask = function(project) {
-    if (this.task) {
-      projects[project.id - 1].tasks.push({description: this.task, completed: false});
-      this.task = '';
+    var obj = this;
+    if (obj.task) {
+      $http.post('/projects/' + project.id + '/tasks', { description: obj.task }).
+        then(function(response) {
+          var data = response.data;
+          project.tasks.push({ id: data.id, description: data.description, completed: data.completed });
+          obj.task = '';
+        }, function(response) {
+        });
     }
   };
 
@@ -11,7 +17,16 @@ app.controller('TaskController', ['$scope', function ($scope) {
     event.preventDefault();
 
     if (confirm('Are you sure ?')) {
-      projects[project.id - 1].tasks.splice(task.id - 1, 1);
+      $http.delete('/projects/' + project.id + '/tasks/' + task.id).
+        then(function(response) {
+          project.tasks.forEach(function(item, i, arr) {
+            if (item.id == task.id) {
+              project.tasks.splice(i, 1);
+            }
+          })
+        }, function(response) {
+
+        });
     }
   };
 
