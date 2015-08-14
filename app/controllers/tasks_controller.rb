@@ -10,6 +10,7 @@ class TasksController < ApplicationController
 
   def update
     @task.update(task_params)
+    render json: { status: :ok }
   end
 
   def destroy
@@ -19,6 +20,7 @@ class TasksController < ApplicationController
 
   def complete
     @task.update(completed: params[:task][:complete])
+    render json: { status: :ok }
   end
 
   def sort

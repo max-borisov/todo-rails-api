@@ -11,7 +11,17 @@ app.controller('ProjectController', ['$scope', '$http', function ($scope, $http)
     $scope.createProject = function(event) {
       event.preventDefault();
 
-      alert(12);
+      $http.post('/projects').
+        then(function(response) {
+          var project = response.data.project;
+          $scope.projects.push({
+            id: project.id,
+            title: project. title,
+            tasks: []
+          });
+
+        }, function(response) {
+        });
     };
 
     $scope.editProjectTitle = function(project, event) {
@@ -43,12 +53,18 @@ app.controller('ProjectController', ['$scope', '$http', function ($scope, $http)
       }
     };
 
-  $scope.submitProjectTitle = function(project, event) {
+  $scope.saveProjectTitle = function(project, event) {
     var input = angular.element(event.currentTarget).find('input');
+    var newTitle = input.val();
     var titleBlock = input.parent().parent();
-    titleBlock.find('h3').text(input.val());
+    titleBlock.find('h3').text(newTitle);
     input.val('');
     titleBlock.removeClass('edit-mode');
+
+    $http.put('/projects/' + project.id, { title: newTitle }).
+      then(function(response) {
+      }, function(response) {
+      });
   };
 
 }]);

@@ -30,14 +30,14 @@ app.controller('TaskController', ['$scope', '$http', function ($scope, $http) {
     }
   };
 
-  $scope.editTask = function(project, task, event) {
+  $scope.editTaskDescription = function(project, task, event) {
     event.preventDefault();
 
     var editBlock = angular.element(event.currentTarget)
                   .parent().parent().parent().parent()
                   .find('td').eq(2);
     var taskDescription = '';
-    var editFormTpl = "<form><input type='text' name='' value=''></form>";
+    var editFormTpl = "<form><input type='text' data-project-id='" + project.id + "' data-task-id='" + task.id + "' name='' value=''></form>";
     var obj = this;
     var input;
 
@@ -46,12 +46,23 @@ app.controller('TaskController', ['$scope', '$http', function ($scope, $http) {
       taskDescription = editBlock.find('p').text();
       form = angular.element(editFormTpl);
 
-      // form.find('input').bind('blur', function(event) {
-      //   obj.taskEditBlurEvent(event);
-      // });
-
       form.bind('submit', function(event) {
-        obj.taskEditSubmitFormEvent(event);
+        event.preventDefault();
+
+        var form = angular.element(event.currentTarget);
+        var input = form.find('input');
+        var projectId = input.attr('data-project-id');
+        var taskId = input.attr('data-task-id');
+        var editBlock = form.parent();
+        var newTaskDescription = input.val();
+        editBlock.find('p').text(newTaskDescription);
+        form.remove();
+        editBlock.removeClass('edit-mode');
+
+        $http.put('/projects/' + projectId + '/tasks/' + taskId, { description: newTaskDescription }).
+          then(function(response) {
+          },
+          function(response) {});
       });
 
       editBlock
@@ -62,23 +73,11 @@ app.controller('TaskController', ['$scope', '$http', function ($scope, $http) {
     }
   };
 
-  // $scope.taskEditBlurEvent = function(event) {
-  //   event.preventDefault();
-  //   var input = angular.element(event.currentTarget);
-  //   var editBlock = input.parent().parent();
-  //   editBlock.find('p').text(input.val());
-  //   input.parent().remove();
-  //   editBlock.removeClass('edit-mode');
-  // };
-
-  $scope.taskEditSubmitFormEvent = function(event) {
-    event.preventDefault();
-    var form = angular.element(event.currentTarget);
-    var editBlock = form.parent();
-    var input = form.find('input');
-    editBlock.find('p').text(input.val());
-    form.remove();
-    editBlock.removeClass('edit-mode');
+  $scope.completeTask = function(project, task) {
+    $http.put('/projects/' + project.id + '/tasks/' + task.id + '/complete', { task: { complete: task.completed } }).
+      then(function(response) {
+      },
+      function(response) {});
   };
 
 }]);

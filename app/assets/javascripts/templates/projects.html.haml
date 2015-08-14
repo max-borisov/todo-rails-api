@@ -6,7 +6,7 @@
         %a.todo-action-edit{ href: "#", title: "Edit", 'ng-click': "editProjectTitle(project, $event)" } Edit
       %li
         %a.todo-action-remove{ href: "#", title: "Delete", 'ng-click': "deleteProject(project, $event)" } Delete
-    %form{ 'ng-submit': "submitProjectTitle(project, $event)" }
+    %form{ 'ng-submit': "saveProjectTitle(project, $event)" }
       %input{ name: "", type: "text" }
   .todo-bar{ 'ng-controller': 'TaskController' }
     .todo-bar-new

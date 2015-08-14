@@ -253,7 +253,9 @@ article {
           padding: 0 16px;
 
           &:hover {
-            display: block;
+            ul {
+              display: block;
+            }
           }
 
           ul {
