@@ -14,8 +14,8 @@
     .main
       .header
         %h1 simple todo lists
-      .content
-        %section.list{ 'ng-controller': 'TodoController as todoCtrl' }
+      .content{ 'ng-controller': 'ProjectController' }
+        %section.list
           <projects></projects>
         .new-todo
-          = button_to 'Add TODO List', projects_path, remote: true
+          %input{ type: 'submit', value: 'Add TODO List', 'ng-click': 'createProject($event)' }
