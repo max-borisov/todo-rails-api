@@ -1,4 +1,4 @@
-Simple ToDo lists with AngularJs
+Rails API for Simple Todo app
 ===
 
 ## [Demo on heroku](https://rails-angular-todo.herokuapp.com/)
@@ -23,10 +23,5 @@ It's a demo so it does not have a registration section.
 * Go to [http://localhost:9595](http://localhost:9595) and have a fun
 
 ## Testing
-* Run `rspec spec/models`
-* Run `rspec spec/controllers`
-* View tests will be done soon
+* Run `rspec spec/`
 
----
-
-![Simple ToDo lists preview](https://github.com/max-borisov/rails-todo/blob/master/app_preview.png)
