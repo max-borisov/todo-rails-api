@@ -3,23 +3,23 @@ class ProjectsController < ApplicationController
   before_action :set_project, only: [:update, :destroy]
 
   def index
-    projects = Project.all_records
-    render json: projects
+    @projects = Project.all
+    render json: @projects.as_json
   end
 
   def create
     @project = Project.create(title: "Project ##{Project.count + 1}")
-    render json: { status: :ok, project: { id: @project.id, title: @project.title } }
+    render json: @project.as_json
   end
 
   def update
     @project.update(project_params)
-    render json: { status: :ok }
+    render json: @project.as_json
   end
 
   def destroy
     @project.destroy
-    render json: { status: :ok }
+    render json: @project.as_json
   end
 
   private

@@ -4,23 +4,23 @@ class TasksController < ApplicationController
   before_action :set_task, only: [:update, :destroy, :complete]
 
   def create
-    task = @project.tasks.create(task_params)
-    render json: { status: :ok, id: task.id, description: task.description, completed: task.completed }
+    @task = @project.tasks.create(task_params)
+    render json: @task.as_json
   end
 
   def update
     @task.update(task_params)
-    render json: { status: :ok }
+    render json: @task.as_json
   end
 
   def destroy
     @task.destroy
-    render json: { status: :ok }
+    render json: @task.as_json
   end
 
   def complete
     @task.update(completed: params[:task][:complete])
-    render json: { status: :ok }
+    render json: @task.as_json
   end
 
   def sort
