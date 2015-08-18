@@ -1,15 +1,13 @@
 Rails.application.routes.draw do
-  # get 'index/index'
 
-  resources :projects, only: [:index, :create, :update, :destroy] do
-    resources :tasks, only: [:create, :update, :destroy] do
-      put :complete, on: :member
-      put :sort, on: :collection
+  scope '/api' do
+    resources :projects, only: [:index, :create, :update, :destroy] do
+      resources :tasks, only: [:create, :update, :destroy] do
+        put :complete, on: :member
+        put :sort, on: :collection
+      end
     end
   end
-
-  # root 'projects#index'
-  root 'index#index'
 
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".
