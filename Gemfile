@@ -23,6 +23,8 @@ gem 'sdoc', '~> 0.4.0', group: :doc
 # Use Capistrano for deployment
 # gem 'capistrano-rails', group: :development
 
+gem 'rack-cors', :require => 'rack/cors'
+
 group :production do
   gem 'pg'
   gem 'rails_12factor'
