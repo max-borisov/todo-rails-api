@@ -1,7 +1,9 @@
 Rails API for Simple Todo app
 ===
 
-## [Demo on heroku](https://rails-angular-todo.herokuapp.com/)
+[![Build Status](https://travis-ci.org/max-borisov/todo-rails-api.svg?branch=master)](https://travis-ci.org/max-borisov/todo-rails-api) [![Code Climate](https://codeclimate.com/github/max-borisov/todo-rails-api/badges/gpa.svg)](https://codeclimate.com/github/max-borisov/todo-rails-api) [![Test Coverage](https://codeclimate.com/github/max-borisov/todo-rails-api/badges/coverage.svg)](https://codeclimate.com/github/max-borisov/todo-rails-api/coverage)
+
+## [Demo on heroku](https://rails-api-todo-app.herokuapp.com/api/projects)
 
 ## Description
 Simple to-do lists app based on Rails framework. 
