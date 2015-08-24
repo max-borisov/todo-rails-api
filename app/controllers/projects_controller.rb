@@ -3,7 +3,7 @@ class ProjectsController < ApplicationController
   before_action :set_project, only: [:update, :destroy]
 
   def index
-    @projects = Project.all
+    @projects = Project.all.order(id: :asc)
     render json: @projects.as_json
   end
 
